@@ -2,9 +2,39 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="jboss-third-party-releases" />
+      <option name="name" value="jboss-third-party-releases" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spring-milestone" />
+      <option name="name" value="Spring Maven MILESTONE Repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="bonita-repository" />
+      <option name="name" value="Bonita Maven repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="alfresco-releases" />
+      <option name="name" value="alfresco-releases" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="shibboleth" />
+      <option name="name" value="shibboleth" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="itext-releases" />
+      <option name="name" value="iText Repository - releases" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
@@ -12,9 +42,74 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="ja-sig" />
+      <option name="name" value="ja-sig" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="croz-repository" />
+      <option name="name" value="CROZ Maven repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central2" />
+      <option name="name" value="central2" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="alfresco-enterprise" />
+      <option name="name" value="alfresco-enterprise" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="croz-thirdparty-repository2" />
+      <option name="name" value="Maven thirdparty repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="croz-thirdparty-repository" />
+      <option name="name" value="CROZ Maven thirdparty repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spring-snapshot" />
+      <option name="name" value="Spring Maven SNAPSHOT Repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="snapshot.extensions.springframework.org" />
+      <option name="name" value="SpringSource S3 Extensions Snapshot Maven Repository" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss-appache-incubating" />
+      <option name="name" value="jboss-appache-incubating" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="oss-sonatype" />
+      <option name="name" value="oss-sonatype" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="ja-sig-legacy" />
+      <option name="name" value="ja-sig-legacy" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="xwiki" />
+      <option name="name" value="xwiki" />
+      <option name="url" value="https://repository.lan.croz.net/repository/maven-public/" />
     </remote-repository>
   </component>
 </project>
