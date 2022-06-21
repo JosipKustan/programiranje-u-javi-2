@@ -126,7 +126,7 @@ public class PlayingGridController implements Initializable {
         if(throwButton.isDisabled()){
              //make a move
               System.out.println(GridPane.getRowIndex(clickedNode)+", "+GridPane.getColumnIndex(clickedNode));
-         GridPane.setColumnIndex(clickedNode, GridPane.getColumnIndex(clickedNode)+stickSum);
+              movePlayer(clickedNode);
              /*gameGrid.getChildren().forEach(node -> {
                  System.out.println(GridPane.getRowIndex(node)+", "+GridPane.getColumnIndex(node));
              });*/
@@ -134,4 +134,27 @@ public class PlayingGridController implements Initializable {
         }
         System.out.println(clickedNode);
     }
+
+    private void movePlayer(Node node) {
+        int row = (GridPane.getRowIndex(node) == null)?0:GridPane.getRowIndex(node);
+        int column = (GridPane.getColumnIndex(node) == null)?0:GridPane.getColumnIndex(node);
+        int nextMove=column+stickSum;
+        if (nextMove<10) {
+         GridPane.setColumnIndex(node, nextMove);
+        }
+        else{
+            if (row+1>2) {
+                //pawn is out
+                deleteNode(node);
+            }else{
+                GridPane.setColumnIndex(node, nextMove-10);
+                GridPane.setRowIndex(node, row+1);
+            }
+        }
+         
+    }
+
+    private void deleteNode(Node node) {
+        gameGrid.getChildren().remove(node);
+    } 
 }
