@@ -45,6 +45,16 @@ public class PlayingGridController implements Initializable {
     private ImageView stick3;
     @FXML
     private ImageView stick4;
+    @FXML
+    private HBox stickBox1;
+    @FXML
+    private ImageView stick1_white;
+    @FXML
+    private ImageView stick2_white;
+    @FXML
+    private ImageView stick3_white;
+    @FXML
+    private ImageView stick4_white;
 
     /**
      * Initializes the controller class.
@@ -62,8 +72,18 @@ public class PlayingGridController implements Initializable {
         }
     }
 
+    @FXML
     private void handleButton(ActionEvent event) {
         System.out.println("I hate life, but i managed to install this shit again");
+        
+        //random true or false
+       //set sticks
+        //sum of random 
+       //moveCount
+        stick1.setVisible(false);
+        stick2.setVisible(true);
+        stick3.setVisible(false);
+        stick4.setVisible(false);
     }
 
     //Rules
@@ -91,6 +111,8 @@ public class PlayingGridController implements Initializable {
         TokenController.initPlayers(gameGrid);
 
     }
+    
+   
 
     /*@FXML
     private void handleClicked(MouseEvent event) {

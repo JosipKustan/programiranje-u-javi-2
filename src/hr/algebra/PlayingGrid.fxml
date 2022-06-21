@@ -46,40 +46,81 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Button>
-      <HBox fx:id="stickBox" layoutY="255.0" prefHeight="100.0" prefWidth="309.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="32.0">
+      <StackPane layoutX="8.0" layoutY="238.0" prefHeight="150.0" prefWidth="351.0">
          <children>
-            <ImageView fx:id="stick1" fitHeight="150.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/DarkStick.png" />
-               </image>
-               <HBox.margin>
-                  <Insets right="16.0" />
-               </HBox.margin>
-            </ImageView>
-            <ImageView fx:id="stick2" fitHeight="150.0" fitWidth="73.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/DarkStick.png" />
-               </image>
-               <HBox.margin>
-                  <Insets right="16.0" />
-               </HBox.margin>
-            </ImageView>
-            <ImageView fx:id="stick3" fitHeight="150.0" fitWidth="73.0" layoutX="42.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/DarkStick.png" />
-               </image>
-               <HBox.margin>
-                  <Insets right="16.0" />
-               </HBox.margin>
-            </ImageView>
-            <ImageView fx:id="stick4" fitHeight="150.0" fitWidth="73.0" layoutX="74.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/DarkStick.png" />
-               </image>
-               <HBox.margin>
-                  <Insets right="64.0" />
-               </HBox.margin>
-            </ImageView>
-         </children></HBox>
+            <HBox fx:id="stickBox1" prefHeight="100.0" prefWidth="309.0">
+               <children>
+                  <ImageView fx:id="stick1_white" fitHeight="150.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/lightStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="stick2_white" fitHeight="150.0" fitWidth="73.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/lightStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="stick3_white" fitHeight="150.0" fitWidth="73.0" layoutX="42.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/lightStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="stick4_white" fitHeight="150.0" fitWidth="73.0" layoutX="74.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/lightStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="64.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox fx:id="stickBox" prefHeight="100.0" prefWidth="309.0">
+               <children>
+                  <ImageView fx:id="stick1" fitHeight="150.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/DarkStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="stick2" fitHeight="150.0" fitWidth="73.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/DarkStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="stick3" fitHeight="150.0" fitWidth="73.0" layoutX="42.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/DarkStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="stick4" fitHeight="150.0" fitWidth="73.0" layoutX="74.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/DarkStick.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="64.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
