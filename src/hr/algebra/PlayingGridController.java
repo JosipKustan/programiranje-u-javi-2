@@ -7,6 +7,7 @@ package hr.algebra;
 
 import hr.algebra.playerTokens.TokenController;
 import static hr.algebra.playerTokens.TokenController.playerEventHandler;
+import hr.algebra.utils.util;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,6 +57,8 @@ public class PlayingGridController implements Initializable {
     @FXML
     private ImageView stick4_white;
 
+    
+    int stickSum;
     /**
      * Initializes the controller class.
      *
@@ -75,21 +78,22 @@ public class PlayingGridController implements Initializable {
     @FXML
     private void handleButton(ActionEvent event) {
         System.out.println("I hate life, but i managed to install this shit again");
-        
+        resetSticks();
+        throwStick(stick1);
+        throwStick(stick2);
+        throwStick(stick3);
+        throwStick(stick4);
         //random true or false
        //set sticks
         //sum of random 
        //moveCount
-        stick1.setVisible(false);
-        stick2.setVisible(true);
-        stick3.setVisible(false);
-        stick4.setVisible(false);
+        System.out.println(stickSum);
     }
 
     //Rules
     private void initGrid() throws FileNotFoundException {
-        Image catImage = new Image("file:playerTokens/cat.png");
-        Image dogImage = new Image("file:playerTokens/dog.png");
+        Image catImage = new Image("file:assets/catPawn.png");
+        Image dogImage = new Image("file:assets/dogPawn.png");
         for (int i = 0; i < 10; i++) {
             ImageView player = new ImageView();
             player.setOnMouseClicked(playerEventHandler());
@@ -123,4 +127,19 @@ public class PlayingGridController implements Initializable {
         }
         System.out.println(node);
     }*/
+
+    private void throwStick(ImageView stick) {
+        if (util.getRandomBoolean()) {
+            stick.setVisible(false);
+            stickSum++;
+        }
+    }
+
+    private void resetSticks() {
+        stickSum = 0;
+        stick1.setVisible(true);
+        stick2.setVisible(true);
+        stick3.setVisible(true);
+        stick4.setVisible(true);
+    }
 }
