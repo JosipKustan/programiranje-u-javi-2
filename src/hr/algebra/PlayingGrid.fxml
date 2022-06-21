@@ -16,28 +16,6 @@
    <children>
       <StackPane layoutX="-1.0" prefHeight="238.0" prefWidth="706.0">
          <children>
-            <GridPane fx:id="gameGrid" alignment="CENTER" prefHeight="240.0" prefWidth="682.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <padding>
-                  <Insets left="20.0" right="24.0" />
-               </padding>
-            </GridPane>
             <ImageView fx:id="boardImage" fitHeight="240.0" fitWidth="706.0" pickOnBounds="true">
                <image>
                   <Image url="@assets/SenetBoard.png" />
@@ -49,6 +27,80 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Button>
+      <GridPane fx:id="gameGrid" alignment="CENTER" prefHeight="240.0" prefWidth="682.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+         <children>
+            <ImageView fx:id="dog1" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0">
+               <image>
+                  <Image url="@assets/DogPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="cat1" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@assets/CatPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="cat2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@assets/CatPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
+               <image>
+                  <Image url="@assets/CatPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
+               <image>
+                  <Image url="@assets/CatPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9">
+               <image>
+                  <Image url="@assets/CatPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="dog2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="2">
+               <image>
+                  <Image url="@assets/DogPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="dog3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="4">
+               <image>
+                  <Image url="@assets/DogPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="dog4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@assets/DogPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="dog5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="8">
+               <image>
+                  <Image url="@assets/DogPawn.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
       <StackPane layoutX="8.0" layoutY="238.0" prefHeight="150.0" prefWidth="351.0">
          <children>
             <HBox fx:id="stickBox1" prefHeight="100.0" prefWidth="309.0">
@@ -124,6 +176,9 @@
                </children>
             </HBox>
          </children>
+         <padding>
+            <Insets left="32.0" />
+         </padding>
       </StackPane>
    </children>
 </AnchorPane>

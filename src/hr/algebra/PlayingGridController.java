@@ -5,21 +5,16 @@
  */
 package hr.algebra;
 
-import hr.algebra.playerTokens.TokenController;
-import static hr.algebra.playerTokens.TokenController.playerEventHandler;
 import hr.algebra.utils.util;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
@@ -29,6 +24,10 @@ import javafx.scene.layout.HBox;
  * @author jkustan
  */
 public class PlayingGridController implements Initializable {
+    
+    
+    int stickSum;
+    
 
     @FXML
     private ImageView boardImage;
@@ -56,9 +55,26 @@ public class PlayingGridController implements Initializable {
     private ImageView stick3_white;
     @FXML
     private ImageView stick4_white;
-
-    
-    int stickSum;
+    @FXML
+    private ImageView dog1;
+    @FXML
+    private ImageView cat1;
+    @FXML
+    private ImageView cat2;
+    @FXML
+    private ImageView cat3;
+    @FXML
+    private ImageView cat4;
+    @FXML
+    private ImageView cat5;
+    @FXML
+    private ImageView dog2;
+    @FXML
+    private ImageView dog3;
+    @FXML
+    private ImageView dog4;
+    @FXML
+    private ImageView dog5;
     /**
      * Initializes the controller class.
      *
@@ -67,12 +83,7 @@ public class PlayingGridController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            // TODO
-            initGrid();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(PlayingGridController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     @FXML
@@ -87,47 +98,12 @@ public class PlayingGridController implements Initializable {
        //set sticks
         //sum of random 
        //moveCount
+       throwButton.setDisable(true);
         System.out.println(stickSum);
     }
 
     //Rules
-    private void initGrid() throws FileNotFoundException {
-        Image catImage = new Image("file:assets/catPawn.png");
-        Image dogImage = new Image("file:assets/dogPawn.png");
-        for (int i = 0; i < 10; i++) {
-            ImageView player = new ImageView();
-            player.setOnMouseClicked(playerEventHandler());
-            player.setFitWidth(50);
-            player.setFitHeight(60);
-            if (i % 2 == 0) {
-                player.setId("cat" + i);
-                player.setImage(catImage);
-            } else {
-                player.setId("dog" + i);
-                player.setImage(dogImage);
-            }
-            gameGrid.add(player, i, 0);
-        }
-        Node node = gameGrid.getChildren().get(3);
-        int row = GridPane.getRowIndex(node);
-        int column = GridPane.getColumnIndex(node);
-        System.out.println(row + " " + column);
-        TokenController.initPlayers(gameGrid);
-
-    }
-    
    
-
-    /*@FXML
-    private void handleClicked(MouseEvent event) {
-        Node node = (Node) event.getTarget();
-        if(node!=null){
-            int row = GridPane.getRowIndex(node);
-            int column = GridPane.getColumnIndex(node);
-        }
-        System.out.println(node);
-    }*/
-
     private void throwStick(ImageView stick) {
         if (util.getRandomBoolean()) {
             stick.setVisible(false);
@@ -141,5 +117,21 @@ public class PlayingGridController implements Initializable {
         stick2.setVisible(true);
         stick3.setVisible(true);
         stick4.setVisible(true);
+    }
+
+    @FXML
+    private void handleClicked(MouseEvent event) {
+         Node clickedNode = (Node) event.getTarget();
+        
+        if(throwButton.isDisabled()){
+             //make a move
+              System.out.println(GridPane.getRowIndex(clickedNode)+", "+GridPane.getColumnIndex(clickedNode));
+         GridPane.setColumnIndex(clickedNode, GridPane.getColumnIndex(clickedNode)+stickSum);
+             /*gameGrid.getChildren().forEach(node -> {
+                 System.out.println(GridPane.getRowIndex(node)+", "+GridPane.getColumnIndex(node));
+             });*/
+             //enable button  
+        }
+        System.out.println(clickedNode);
     }
 }
