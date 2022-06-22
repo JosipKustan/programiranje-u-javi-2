@@ -64,17 +64,17 @@
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
+            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
+            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9">
+            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>

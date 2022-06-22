@@ -24,10 +24,8 @@ import javafx.scene.layout.HBox;
  * @author jkustan
  */
 public class PlayingGridController implements Initializable {
-    
-    
+
     int stickSum;
-    
 
     @FXML
     private ImageView boardImage;
@@ -75,6 +73,7 @@ public class PlayingGridController implements Initializable {
     private ImageView dog4;
     @FXML
     private ImageView dog5;
+
     /**
      * Initializes the controller class.
      *
@@ -83,7 +82,7 @@ public class PlayingGridController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     @FXML
@@ -95,15 +94,14 @@ public class PlayingGridController implements Initializable {
         throwStick(stick3);
         throwStick(stick4);
         //random true or false
-       //set sticks
+        //set sticks
         //sum of random 
-       //moveCount
-       throwButton.setDisable(true);
+        //moveCount
+        throwButton.setDisable(true);
         System.out.println(stickSum);
     }
 
     //Rules
-   
     private void throwStick(ImageView stick) {
         if (util.getRandomBoolean()) {
             stick.setVisible(false);
@@ -121,35 +119,34 @@ public class PlayingGridController implements Initializable {
 
     @FXML
     private void handleClicked(MouseEvent event) {
-         Node clickedNode = (Node) event.getTarget();
-        
-        if(throwButton.isDisabled()){
-             //make a move
-              System.out.println(GridPane.getRowIndex(clickedNode)+", "+GridPane.getColumnIndex(clickedNode));
-              movePlayer(clickedNode);
-             /*gameGrid.getChildren().forEach(node -> {
+        Node clickedNode = (Node) event.getTarget();
+
+        if (throwButton.isDisabled()) {
+            //make a move
+            System.out.println(GridPane.getRowIndex(clickedNode) + ", " + GridPane.getColumnIndex(clickedNode));
+            movePlayer(clickedNode);
+            /*gameGrid.getChildren().forEach(node -> {
                  System.out.println(GridPane.getRowIndex(node)+", "+GridPane.getColumnIndex(node));
              });*/
-             //enable button  
+            //enable button  
         }
         System.out.println(clickedNode);
     }
 
     private void movePlayer(Node node) {
-        int row = (GridPane.getRowIndex(node) == null)?0:GridPane.getRowIndex(node);
-        int column = (GridPane.getColumnIndex(node) == null)?0:GridPane.getColumnIndex(node);
-        int nextMove=column+stickSum;
-        if (nextMove<10) {
-            tryMove(node,row,nextMove);
-        }
-        else{
-            if (row+1>2) {
+        int row = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
+        int column = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+        int nextMove = column + stickSum;
+        if (nextMove < 10) {
+            tryMove(node, row, nextMove);
+        } else {
+            if (row + 1 > 2) {
                 //pawn is out
                 deleteNode(node);
-            }else{
-                int rowToGo=row+1;
-                int columnToGo=nextMove-10;
-                tryMove(node,rowToGo,columnToGo);
+            } else {
+                int rowToGo = row + 1;
+                int columnToGo = nextMove - 10;
+                tryMove(node, rowToGo, columnToGo);
             }
         }
         throwButton.setDisable(false);
@@ -157,64 +154,121 @@ public class PlayingGridController implements Initializable {
 
     private void deleteNode(Node node) {
         gameGrid.getChildren().remove(node);
-    } 
+    }
 
     private void placeNodeAt(Node node, int row, int column) {
-         GridPane.setRowIndex(node, row);
-         GridPane.setColumnIndex(node, column);
+        GridPane.setRowIndex(node, row);
+        GridPane.setColumnIndex(node, column);
     }
 
     private MoveState checkIntersecting(Node node, int row, int column) {
-     
-     for(Node nodeFound:gameGrid.getChildren()){
-         int rowFound = (GridPane.getRowIndex(nodeFound) == null)?0:GridPane.getRowIndex(nodeFound);
-         int columnFound = (GridPane.getColumnIndex(nodeFound) == null)?0:GridPane.getColumnIndex(nodeFound);
-         if (row==rowFound&&column==columnFound) {
-              return isSameNode(node,nodeFound);
-         }
-     }
-     return MoveState.MOVE;
+
+        Node nodeFound = findNodeAt(row, column);
+        if (nodeFound != null) {
+            return isSameNode(node, nodeFound);
+        }
+        return MoveState.MOVE;
     }
 
     private MoveState isSameNode(Node node, Node nodeFound) {
-       String nodeId=node.getId().substring(0, 2);
-       String nodeFoundId=nodeFound.getId().substring(0, 2);
-       
-       return nodeId.equals(nodeFoundId)?MoveState.NO_MOVE:MoveState.ENEMY;
+        String nodeId = node.getId().substring(0, 2);
+        String nodeFoundId = nodeFound.getId().substring(0, 2);
+
+        return nodeId.equals(nodeFoundId) ? MoveState.NO_MOVE : MoveState.ENEMY;
     }
 
     private void tryMove(Node node, int row, int column) {
         //move, no_move and enemy
-        MoveState moveState=checkIntersecting(node,row,column);
+        MoveState moveState = checkIntersecting(node, row, column);
         //if enemy - look for adjecent
-            System.out.println(moveState);
-            switch(moveState){
-                case MOVE:
-                    placeNodeAt(node,row,column);
+        if (moveState == MoveState.ENEMY) {
+            moveState = checkAdjecent(row, column);
+        }
+        //if 3 enemies are infront NO MOVE
+        if(checkIfEnemiesAhead(node)){
+            moveState=MoveState.NO_MOVE;
+        }
+        System.out.println(moveState);
+        switch (moveState) {
+            case MOVE:
+                placeNodeAt(node, row, column);
                 break;
-                case ENEMY:
-                    swapNodes(node,row,column);
+            case ENEMY:
+                swapNodes(node, row, column);
                 break;
-                default:System.out.println("no moves avaliable for this node");
+            default:
+                System.out.println("no moves avaliable for this node");
                 break;
-            
-            }
-            
-            
+        }
     }
 
     private void swapNodes(Node node, int row, int column) {
-        int rowCurrent = (GridPane.getRowIndex(node) == null)?0:GridPane.getRowIndex(node);
-        int columnCurrent = (GridPane.getColumnIndex(node) == null)?0:GridPane.getColumnIndex(node);
-        placeNodeAt(node,row,column);
+        int rowCurrent = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
+        int columnCurrent = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+        Node nodeFound = findNodeAt(row, column);
+        placeNodeAt(nodeFound, rowCurrent, columnCurrent);
+        placeNodeAt(node, row, column);
+    }
+
+    private MoveState checkAdjecent(int row, int column) {
+        int adjecentSum = 0;
+        Node node = findNodeAt(row, column);
+        String nodeId = node.getId().substring(0, 2);
+        for (int i = -1; i < 2; i++) {
+            int columnToFind = column + i;
+            //same row
+            if (columnToFind < 10 && columnToFind >= 0) {
+                Node nodeFound = findNodeAt(row, columnToFind);
+                if (nodeFound != null) {
+                    String nodeFoundId = nodeFound.getId().substring(0, 2);
+                    if (nodeId.equals(nodeFoundId)) {
+                        adjecentSum++;
+                    }
+                }
+            } //row is different
+            else {
+                if (columnToFind > 9) {
+                    int newColumn = column + i - 10;
+                    Node nodeFound = findNodeAt(row + 1, newColumn);
+                    if (nodeFound != null) {
+                        String nodeFoundId = nodeFound.getId().substring(0, 2);
+                        if (nodeId.equals(nodeFoundId)) {
+                            adjecentSum++;
+                        }
+                    }
+                } else {
+                    int newColumn = column + i + 10;
+                    Node nodeFound = findNodeAt(row - 1, newColumn);
+                    if (nodeFound != null) {
+                        String nodeFoundId = nodeFound.getId().substring(0, 2);
+                        if (nodeId.equals(nodeFoundId)) {
+                            adjecentSum++;
+                        }
+                    }
+                }
+
+            }
+
+        }
+        System.out.println("found near: "+adjecentSum);
+        return adjecentSum > 1 ? MoveState.NO_MOVE : MoveState.ENEMY;
+    }
+
+    private Node findNodeAt(int row, int column) {
+        for (Node nodeFound : gameGrid.getChildren()) {
+            int rowFound = (GridPane.getRowIndex(nodeFound) == null) ? 0 : GridPane.getRowIndex(nodeFound);
+            int columnFound = (GridPane.getColumnIndex(nodeFound) == null) ? 0 : GridPane.getColumnIndex(nodeFound);
+            if (row == rowFound && column == columnFound) {
+                return nodeFound;
+            }
+        }
+        return null;
+    }
+
+    private boolean checkIfEnemiesAhead(Node node) {
+        int row = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
+        int column = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
         
-        for(Node nodeFound:gameGrid.getChildren()){
-         int rowFound = (GridPane.getRowIndex(nodeFound) == null)?0:GridPane.getRowIndex(nodeFound);
-         int columnFound = (GridPane.getColumnIndex(nodeFound) == null)?0:GridPane.getColumnIndex(nodeFound);
-         if (row==rowFound&&column==columnFound) {
-            
-             placeNodeAt(nodeFound,rowCurrent,columnCurrent);
-         }
-     }
+        
     }
 }
