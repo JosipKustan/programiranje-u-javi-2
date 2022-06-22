@@ -196,7 +196,7 @@ public class PlayingGridController implements Initializable {
                 if (row == 2 && column == 5) {
                     moveState = MoveState.NO_MOVE;
                 }
-                if (row == 2 && column > 6) {
+                if (row == 2 && column > 6 && rowCurrent == 2 && columnCurrent == 5) {
                     moveState = MoveState.ENEMY_BACK;
                 }
 
@@ -208,23 +208,25 @@ public class PlayingGridController implements Initializable {
 
             if (row == 2 && column > 5) {
                 //going  farther of Happiness o
-                if (rowCurrent == 2 && columnCurrent == 5) {
-                    //already on house of happyness
-                    if (row == 2 && column == 6) {
-                        moveState = MoveState.BACK;
+                if (moveState != MoveState.ENEMY_BACK) {
+                    if (rowCurrent == 2 && columnCurrent == 5) {
+                        //already on house of happyness
+                        if (row == 2 && column == 6) {
+                            moveState = MoveState.BACK;
+                        }
+                    } else {
+                        moveState = MoveState.NO_MOVE;
                     }
-                }else{
-                    moveState = MoveState.NO_MOVE;
                 }
 
             }
-            if (row == 2 && column == 7 && stickSum != 3) {
+            if (rowCurrent == 2 && columnCurrent == 7 && stickSum != 3) {
                 moveState = MoveState.NO_MOVE;
             }
-            if (row == 2 && column == 8 && stickSum != 2) {
+            if (rowCurrent == 2 && columnCurrent == 8 && stickSum != 2) {
                 moveState = MoveState.NO_MOVE;
             }
-            if (row == 2 && column == 9 && stickSum != 1) {
+            if (rowCurrent == 2 && columnCurrent == 9 && stickSum != 1) {
                 moveState = MoveState.NO_MOVE;
             }
             System.out.println(moveState);
@@ -243,8 +245,8 @@ public class PlayingGridController implements Initializable {
                 placeNodeBack(node);
                 break;
             case ENEMY_BACK:
-                swapNodes(node, row, column);
                 placeNodeBack(findNodeAt(row, column));
+                placeNodeAt(node, row, column);
                 break;
             default:
                 System.out.println("no moves avaliable for this node");
@@ -361,16 +363,19 @@ public class PlayingGridController implements Initializable {
 
     private void placeNodeBack(Node node) {
         for (int i = 0; i < 14; i++) {
-            int column=5-i;
-            int row=1;
-            if (column<9) {
-                if (column<0) {
-                    column=column+10;
+            int column = 5 - i;
+            int row = 1;
+            if (column < 9) {
+                if (column < 0) {
+                    column = column + 10;
                     row--;
                 }
-                placeNodeAt(node, row, column);
+                if (findNodeAt(row, column) == null) {
+                    placeNodeAt(node, row, column);
+                    return;
+                }
             }
-            
+
         }
     }
 }
