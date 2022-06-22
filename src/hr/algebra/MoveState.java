@@ -13,4 +13,6 @@ public enum MoveState {
     MOVE,
     NO_MOVE,
     ENEMY,
+    BACK,
+    ENEMY_BACK
 }

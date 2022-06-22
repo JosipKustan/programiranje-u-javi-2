@@ -137,6 +137,7 @@ public class PlayingGridController implements Initializable {
         int row = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
         int column = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
         int nextMove = column + stickSum;
+
         if (nextMove < 10) {
             tryMove(node, row, nextMove);
         } else {
@@ -178,23 +179,72 @@ public class PlayingGridController implements Initializable {
     }
 
     private void tryMove(Node node, int row, int column) {
+        int rowCurrent = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
+        int columnCurrent = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
         //move, no_move and enemy
         MoveState moveState = checkIntersecting(node, row, column);
-        //if enemy - look for adjecent
-        if (moveState == MoveState.ENEMY) {
-            moveState = checkAdjecent(row, column);
+        if (stickSum != 0) {
+
+            //if enemy - look for adjecent
+            if (moveState == MoveState.ENEMY) {
+                moveState = checkAdjecent(row, column);
+                //on house of safty
+                if (row == 1 && column == 5) {
+                    moveState = MoveState.NO_MOVE;
+                }
+                //on house of happi
+                if (row == 2 && column == 5) {
+                    moveState = MoveState.NO_MOVE;
+                }
+                if (row == 2 && column > 6) {
+                    moveState = MoveState.ENEMY_BACK;
+                }
+
+            }
+            //if 3 enemies are infront NO MOVE
+            if (checkIfEnemiesAhead(node)) {
+                moveState = MoveState.NO_MOVE;
+            }
+
+            if (row == 2 && column > 5) {
+                //going  farther of Happiness o
+                if (rowCurrent == 2 && columnCurrent == 5) {
+                    //already on house of happyness
+                    if (row == 2 && column == 6) {
+                        moveState = MoveState.BACK;
+                    }
+                }else{
+                    moveState = MoveState.NO_MOVE;
+                }
+
+            }
+            if (row == 2 && column == 7 && stickSum != 3) {
+                moveState = MoveState.NO_MOVE;
+            }
+            if (row == 2 && column == 8 && stickSum != 2) {
+                moveState = MoveState.NO_MOVE;
+            }
+            if (row == 2 && column == 9 && stickSum != 1) {
+                moveState = MoveState.NO_MOVE;
+            }
+            System.out.println(moveState);
+        } else {
+            moveState = MoveState.NO_MOVE;
         }
-        //if 3 enemies are infront NO MOVE
-        if(checkIfEnemiesAhead(node)){
-            moveState=MoveState.NO_MOVE;
-        }
-        System.out.println(moveState);
+
         switch (moveState) {
             case MOVE:
                 placeNodeAt(node, row, column);
                 break;
             case ENEMY:
                 swapNodes(node, row, column);
+                break;
+            case BACK:
+                placeNodeBack(node);
+                break;
+            case ENEMY_BACK:
+                swapNodes(node, row, column);
+                placeNodeBack(findNodeAt(row, column));
                 break;
             default:
                 System.out.println("no moves avaliable for this node");
@@ -250,7 +300,7 @@ public class PlayingGridController implements Initializable {
             }
 
         }
-        System.out.println("found near: "+adjecentSum);
+        System.out.println("found near: " + adjecentSum);
         return adjecentSum > 1 ? MoveState.NO_MOVE : MoveState.ENEMY;
     }
 
@@ -268,7 +318,59 @@ public class PlayingGridController implements Initializable {
     private boolean checkIfEnemiesAhead(Node node) {
         int row = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
         int column = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
-        
-        
+        String nodeId = node.getId().substring(0, 2);
+        int enemiesAhead = 0;
+        for (int i = 0; i < 3; i++) {
+            int columnToFind = column + i;
+            //same row
+            if (columnToFind < 10 && columnToFind >= 0) {
+                Node nodeFound = findNodeAt(row, columnToFind);
+                if (nodeFound != null) {
+                    String nodeFoundId = nodeFound.getId().substring(0, 2);
+                    if (!nodeId.equals(nodeFoundId)) {
+                        enemiesAhead++;
+                    }
+                }
+            } //row is different
+            else {
+                if (columnToFind > 9) {
+                    int newColumn = column + i - 10;
+                    Node nodeFound = findNodeAt(row + 1, newColumn);
+                    if (nodeFound != null) {
+                        String nodeFoundId = nodeFound.getId().substring(0, 2);
+                        if (!nodeId.equals(nodeFoundId)) {
+                            enemiesAhead++;
+                        }
+                    }
+                } else {
+                    int newColumn = column + i + 10;
+                    Node nodeFound = findNodeAt(row - 1, newColumn);
+                    if (nodeFound != null) {
+                        String nodeFoundId = nodeFound.getId().substring(0, 2);
+                        if (!nodeId.equals(nodeFoundId)) {
+                            enemiesAhead++;
+                        }
+                    }
+                }
+
+            }
+
+        }
+        return enemiesAhead > 2;
+    }
+
+    private void placeNodeBack(Node node) {
+        for (int i = 0; i < 14; i++) {
+            int column=5-i;
+            int row=1;
+            if (column<9) {
+                if (column<0) {
+                    column=column+10;
+                    row--;
+                }
+                placeNodeAt(node, row, column);
+            }
+            
+        }
     }
 }
