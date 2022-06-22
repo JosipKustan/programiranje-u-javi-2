@@ -140,21 +140,81 @@ public class PlayingGridController implements Initializable {
         int column = (GridPane.getColumnIndex(node) == null)?0:GridPane.getColumnIndex(node);
         int nextMove=column+stickSum;
         if (nextMove<10) {
-         GridPane.setColumnIndex(node, nextMove);
+            tryMove(node,row,nextMove);
         }
         else{
             if (row+1>2) {
                 //pawn is out
                 deleteNode(node);
             }else{
-                GridPane.setColumnIndex(node, nextMove-10);
-                GridPane.setRowIndex(node, row+1);
+                int rowToGo=row+1;
+                int columnToGo=nextMove-10;
+                tryMove(node,rowToGo,columnToGo);
             }
         }
-         
+        throwButton.setDisable(false);
     }
 
     private void deleteNode(Node node) {
         gameGrid.getChildren().remove(node);
     } 
+
+    private void placeNodeAt(Node node, int row, int column) {
+         GridPane.setRowIndex(node, row);
+         GridPane.setColumnIndex(node, column);
+    }
+
+    private MoveState checkIntersecting(Node node, int row, int column) {
+     
+     for(Node nodeFound:gameGrid.getChildren()){
+         int rowFound = (GridPane.getRowIndex(nodeFound) == null)?0:GridPane.getRowIndex(nodeFound);
+         int columnFound = (GridPane.getColumnIndex(nodeFound) == null)?0:GridPane.getColumnIndex(nodeFound);
+         if (row==rowFound&&column==columnFound) {
+              return isSameNode(node,nodeFound);
+         }
+     }
+     return MoveState.MOVE;
+    }
+
+    private MoveState isSameNode(Node node, Node nodeFound) {
+       String nodeId=node.getId().substring(0, 2);
+       String nodeFoundId=nodeFound.getId().substring(0, 2);
+       
+       return nodeId.equals(nodeFoundId)?MoveState.NO_MOVE:MoveState.ENEMY;
+    }
+
+    private void tryMove(Node node, int row, int column) {
+        //move, no_move and enemy
+        MoveState moveState=checkIntersecting(node,row,column);
+        //if enemy - look for adjecent
+            System.out.println(moveState);
+            switch(moveState){
+                case MOVE:
+                    placeNodeAt(node,row,column);
+                break;
+                case ENEMY:
+                    swapNodes(node,row,column);
+                break;
+                default:System.out.println("no moves avaliable for this node");
+                break;
+            
+            }
+            
+            
+    }
+
+    private void swapNodes(Node node, int row, int column) {
+        int rowCurrent = (GridPane.getRowIndex(node) == null)?0:GridPane.getRowIndex(node);
+        int columnCurrent = (GridPane.getColumnIndex(node) == null)?0:GridPane.getColumnIndex(node);
+        placeNodeAt(node,row,column);
+        
+        for(Node nodeFound:gameGrid.getChildren()){
+         int rowFound = (GridPane.getRowIndex(nodeFound) == null)?0:GridPane.getRowIndex(nodeFound);
+         int columnFound = (GridPane.getColumnIndex(nodeFound) == null)?0:GridPane.getColumnIndex(nodeFound);
+         if (row==rowFound&&column==columnFound) {
+            
+             placeNodeAt(nodeFound,rowCurrent,columnCurrent);
+         }
+     }
+    }
 }
