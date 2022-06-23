@@ -60,27 +60,27 @@
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat1" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9" GridPane.rowIndex="2">
+            <ImageView fx:id="cat1" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <ImageView fx:id="cat2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="2">
+            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="2">
+            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
+            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
@@ -90,17 +90,17 @@
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="2">
+            <ImageView fx:id="dog3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="3">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="3">
+            <ImageView fx:id="dog4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="2">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="5">
+            <ImageView fx:id="dog5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="1">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
@@ -196,5 +196,7 @@
             <Font size="22.0" />
          </font>
       </Label>
+      <Button layoutX="404.0" layoutY="282.0" mnemonicParsing="false" onAction="#saveGame" text="sejv" />
+      <Button layoutX="352.0" layoutY="339.0" mnemonicParsing="false" onAction="#loadGame" text="load" />
    </children>
 </AnchorPane>

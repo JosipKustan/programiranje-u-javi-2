@@ -78,11 +78,11 @@ public class PlayingGridController implements Initializable {
     @FXML
     private ImageView dog4;
     @FXML
-    private ImageView dog5;
-    @FXML
     private Label turnLabel;
     @FXML
     private Label youWinLabel;
+    @FXML
+    private ImageView dog5;
 
     /**
      * Initializes the controller class.
@@ -92,7 +92,67 @@ public class PlayingGridController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        int[][] initialState = new int[2][5];
+        initialState[0][0] = 0;
+        initialState[0][1] = 2;
+        initialState[0][2] = 4;
+        initialState[0][3] = 6;
+        initialState[0][4] = 8;
+        initialState[1][0] = 1;
+        initialState[1][1] = 3;
+        initialState[1][2] = 5;
+        initialState[1][3] = 7;
+        initialState[1][4] = 9;
+        setupBoard(initialState);
+    }
 
+    public void setupBoard(int[][] boardstate) {
+        for (Node node : gameGrid.getChildren()) {
+            if (node.getId().startsWith("dog")) {
+                int dognumber = Integer.parseInt(String.valueOf(node.getId().charAt(node.getId().length() - 1))) - 1;
+                placeNodeAt(node, Math.floorDiv(boardstate[0][dognumber], 10), boardstate[0][dognumber] % 10);
+            }
+            if (node.getId().startsWith("cat")) {
+                int catnumber = Integer.parseInt(String.valueOf(node.getId().charAt(node.getId().length() - 1))) - 1;
+                placeNodeAt(node, Math.floorDiv(boardstate[1][catnumber], 10), boardstate[1][catnumber] % 10);
+            }
+        }
+    }
+
+    public SAVEGAME save = new SAVEGAME();
+
+    @FXML
+    private void saveGame(ActionEvent event) {
+        System.out.println("Saving...");
+        save.state = getBoardState();
+        SAVEGAME.save(save);
+    }
+
+    @FXML
+    private void loadGame(ActionEvent event) {
+        System.out.println("Loading...");
+        SAVEGAME load = SAVEGAME.load();
+        setupBoard(load.state);
+
+    }
+
+    public int[][] getBoardState() {
+        int[][] returndata = new int[2][5];
+        for (Node node : gameGrid.getChildren()) {
+            if (node.getId().startsWith("dog")) {
+                int dognumber = Integer.parseInt(String.valueOf(node.getId().charAt(node.getId().length() - 1))) - 1;
+                int row = getNodeRowIndex(node);
+                int column = getNodeColumnIndex(node);
+                returndata[0][dognumber] = 10 * row + column;
+            }
+            if (node.getId().startsWith("cat")) {
+                int catnumber = Integer.parseInt(String.valueOf(node.getId().charAt(node.getId().length() - 1))) - 1;
+                int row = getNodeRowIndex(node);
+                int column = getNodeColumnIndex(node);
+                returndata[1][catnumber] = 10 * row + column;
+            }
+        }
+        return returndata;
     }
 
     @FXML
@@ -103,9 +163,9 @@ public class PlayingGridController implements Initializable {
         throwStick(stick2);
         throwStick(stick3);
         throwStick(stick4);
-        if (stickSum==0) {
+        if (stickSum == 0) {
             changeTurn();
-            return ;
+            return;
         }
         //sum alive
         throwButton.setDisable(true);
@@ -132,7 +192,7 @@ public class PlayingGridController implements Initializable {
 
             }
         }
-        if (nodeInGameCounter==0) {
+        if (nodeInGameCounter == 0) {
             youWin();
         }
     }
@@ -448,7 +508,7 @@ public class PlayingGridController implements Initializable {
     private void changeTurn() {
         turn = turn.equals("cat") ? "dog" : "cat";
         turnLabel.setText(turn.substring(0, 1).toUpperCase() + turn.substring(1));
-        for(Node node:gameGrid.getChildren()){
+        for (Node node : gameGrid.getChildren()) {
             node.setEffect(null);
         }
     }
@@ -456,6 +516,4 @@ public class PlayingGridController implements Initializable {
     private void youWin() {
         youWinLabel.setVisible(true);
     }
-
-
 }
