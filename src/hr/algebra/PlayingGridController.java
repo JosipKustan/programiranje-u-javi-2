@@ -13,10 +13,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 /**
  * FXML Controller class
@@ -26,6 +29,9 @@ import javafx.scene.layout.HBox;
 public class PlayingGridController implements Initializable {
 
     int stickSum;
+    String turn = "cat";
+    int nodeMoveCounter;
+    int nodeInGameCounter;
 
     @FXML
     private ImageView boardImage;
@@ -73,6 +79,10 @@ public class PlayingGridController implements Initializable {
     private ImageView dog4;
     @FXML
     private ImageView dog5;
+    @FXML
+    private Label turnLabel;
+    @FXML
+    private Label youWinLabel;
 
     /**
      * Initializes the controller class.
@@ -86,19 +96,53 @@ public class PlayingGridController implements Initializable {
     }
 
     @FXML
-    private void handleButton(ActionEvent event) {
+    private void handleThrowButton(ActionEvent event) {
         System.out.println("I hate life, but i managed to install this shit again");
         resetSticks();
         throwStick(stick1);
         throwStick(stick2);
         throwStick(stick3);
         throwStick(stick4);
-        //random true or false
-        //set sticks
-        //sum of random 
-        //moveCount
+        if (stickSum==0) {
+            changeTurn();
+            return ;
+        }
+        //sum alive
         throwButton.setDisable(true);
-        System.out.println(stickSum);
+        //test if avaliable moves
+        for (Node node : gameGrid.getChildren()) {
+            if (turn.equals(node.getId().substring(0, 3))) {
+                nodeInGameCounter++;
+
+                int row = getNodeRowIndex(node);
+                int column = getNodeColumnIndex(node);
+                int nextMove = column + stickSum;
+
+                if (nextMove < 10) {
+                    tryMove(node, row, nextMove, true);
+                } else {
+                    if (row + 1 > 2) {
+                        //pawn is out
+                    } else {
+                        int rowToGo = row + 1;
+                        int columnToGo = nextMove - 10;
+                        tryMove(node, rowToGo, columnToGo, true);
+                    }
+                }
+
+            }
+        }
+        if (nodeInGameCounter==0) {
+            youWin();
+        }
+    }
+
+    private static int getNodeColumnIndex(Node node) {
+        return (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+    }
+
+    private static int getNodeRowIndex(Node node) {
+        return (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
     }
 
     //Rules
@@ -120,7 +164,9 @@ public class PlayingGridController implements Initializable {
     @FXML
     private void handleClicked(MouseEvent event) {
         Node clickedNode = (Node) event.getTarget();
-
+        if (!turn.equals(clickedNode.getId().substring(0, 3))) {
+            return;
+        }
         if (throwButton.isDisabled()) {
             //make a move
             System.out.println(GridPane.getRowIndex(clickedNode) + ", " + GridPane.getColumnIndex(clickedNode));
@@ -134,12 +180,12 @@ public class PlayingGridController implements Initializable {
     }
 
     private void movePlayer(Node node) {
-        int row = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
-        int column = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+        int row = getNodeRowIndex(node);
+        int column = getNodeColumnIndex(node);
         int nextMove = column + stickSum;
 
         if (nextMove < 10) {
-            tryMove(node, row, nextMove);
+            tryMove(node, row, nextMove, false);
         } else {
             if (row + 1 > 2) {
                 //pawn is out
@@ -147,7 +193,7 @@ public class PlayingGridController implements Initializable {
             } else {
                 int rowToGo = row + 1;
                 int columnToGo = nextMove - 10;
-                tryMove(node, rowToGo, columnToGo);
+                tryMove(node, rowToGo, columnToGo, false);
             }
         }
         throwButton.setDisable(false);
@@ -178,9 +224,9 @@ public class PlayingGridController implements Initializable {
         return nodeId.equals(nodeFoundId) ? MoveState.NO_MOVE : MoveState.ENEMY;
     }
 
-    private void tryMove(Node node, int row, int column) {
-        int rowCurrent = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
-        int columnCurrent = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+    private void tryMove(Node node, int row, int column, boolean isRunThrough) {
+        int rowCurrent = getNodeRowIndex(node);
+        int columnCurrent = getNodeColumnIndex(node);
         //move, no_move and enemy
         MoveState moveState = checkIntersecting(node, row, column);
         if (stickSum != 0) {
@@ -234,6 +280,22 @@ public class PlayingGridController implements Initializable {
             moveState = MoveState.NO_MOVE;
         }
 
+        if (isRunThrough) {
+
+            if (moveState == MoveState.NO_MOVE) {
+                nodeMoveCounter++;
+            } else {
+                DropShadow dropShadowEffect = new DropShadow();
+                dropShadowEffect.setRadius(15.0);
+                dropShadowEffect.setWidth(30.0);
+                dropShadowEffect.setHeight(30.0);
+                Color paint = new Color(1.0, 0.0, 0.0876, 1.0);
+                dropShadowEffect.setColor(paint);
+                node.setEffect(dropShadowEffect);
+            }
+            return;
+        }
+
         switch (moveState) {
             case MOVE:
                 placeNodeAt(node, row, column);
@@ -252,11 +314,15 @@ public class PlayingGridController implements Initializable {
                 System.out.println("no moves avaliable for this node");
                 break;
         }
+        if (moveState != MoveState.NO_MOVE) {
+            changeTurn();
+        }
+
     }
 
     private void swapNodes(Node node, int row, int column) {
-        int rowCurrent = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
-        int columnCurrent = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+        int rowCurrent = getNodeRowIndex(node);
+        int columnCurrent = getNodeColumnIndex(node);
         Node nodeFound = findNodeAt(row, column);
         placeNodeAt(nodeFound, rowCurrent, columnCurrent);
         placeNodeAt(node, row, column);
@@ -308,8 +374,8 @@ public class PlayingGridController implements Initializable {
 
     private Node findNodeAt(int row, int column) {
         for (Node nodeFound : gameGrid.getChildren()) {
-            int rowFound = (GridPane.getRowIndex(nodeFound) == null) ? 0 : GridPane.getRowIndex(nodeFound);
-            int columnFound = (GridPane.getColumnIndex(nodeFound) == null) ? 0 : GridPane.getColumnIndex(nodeFound);
+            int rowFound = getNodeRowIndex(nodeFound);
+            int columnFound = getNodeColumnIndex(nodeFound);
             if (row == rowFound && column == columnFound) {
                 return nodeFound;
             }
@@ -318,8 +384,8 @@ public class PlayingGridController implements Initializable {
     }
 
     private boolean checkIfEnemiesAhead(Node node) {
-        int row = (GridPane.getRowIndex(node) == null) ? 0 : GridPane.getRowIndex(node);
-        int column = (GridPane.getColumnIndex(node) == null) ? 0 : GridPane.getColumnIndex(node);
+        int row = getNodeRowIndex(node);
+        int column = getNodeColumnIndex(node);
         String nodeId = node.getId().substring(0, 2);
         int enemiesAhead = 0;
         for (int i = 0; i < 3; i++) {
@@ -378,4 +444,18 @@ public class PlayingGridController implements Initializable {
 
         }
     }
+
+    private void changeTurn() {
+        turn = turn.equals("cat") ? "dog" : "cat";
+        turnLabel.setText(turn.substring(0, 1).toUpperCase() + turn.substring(1));
+        for(Node node:gameGrid.getChildren()){
+            node.setEffect(null);
+        }
+    }
+
+    private void youWin() {
+        youWinLabel.setVisible(true);
+    }
+
+
 }

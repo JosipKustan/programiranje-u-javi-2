@@ -21,9 +21,14 @@
                <image>
                   <Image url="@assets/SenetBoard.png" />
                </image></ImageView>
+            <Label fx:id="youWinLabel" text="You win!" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="120.0" />
+               </font>
+            </Label>
          </children>
       </StackPane>
-      <Button fx:id="throwButton" layoutX="445.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleButton" prefHeight="102.0" prefWidth="259.0" style="-fx-background-color: #000000;" text="THROW" textFill="WHITE">
+      <Button fx:id="throwButton" layoutX="445.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleThrowButton" prefHeight="102.0" prefWidth="259.0" style="-fx-background-color: #000000;" text="THROW" textFill="WHITE">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
@@ -55,47 +60,47 @@
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat1" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+            <ImageView fx:id="cat1" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9" GridPane.rowIndex="2">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+            <ImageView fx:id="cat2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9">
+            <ImageView fx:id="cat3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="2">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
+            <ImageView fx:id="cat4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="2">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
+            <ImageView fx:id="cat5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <image>
                   <Image url="@assets/CatPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="2">
+            <ImageView fx:id="dog2" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="4">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="6">
+            <ImageView fx:id="dog3" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="2">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="4">
+            <ImageView fx:id="dog4" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="3">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="dog5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="8">
+            <ImageView fx:id="dog5" fitHeight="87.0" fitWidth="58.0" onMouseClicked="#handleClicked" pickOnBounds="true" preserveRatio="true" rotate="270.0" GridPane.columnIndex="5">
                <image>
                   <Image url="@assets/DogPawn.png" />
                </image>
@@ -186,7 +191,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="413.0" layoutY="253.0" prefHeight="32.0" prefWidth="65.0" text="Cat" textFill="WHITE">
+      <Label fx:id="turnLabel" layoutX="413.0" layoutY="253.0" prefHeight="32.0" prefWidth="65.0" text="Cat" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>
