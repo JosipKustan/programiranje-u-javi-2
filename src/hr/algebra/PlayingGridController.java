@@ -8,6 +8,8 @@ package hr.algebra;
 import hr.algebra.utils.util;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,7 +30,7 @@ import javafx.scene.paint.Color;
  */
 public class PlayingGridController implements Initializable {
 
-    int stickSum;
+    static int stickSum;
     String turn = "cat";
     int nodeMoveCounter;
     int nodeInGameCounter;
@@ -155,14 +157,33 @@ public class PlayingGridController implements Initializable {
         return returndata;
     }
 
+    public static final class MyRunnable implements Runnable {
+        private final ImageView štapić;
+
+        public MyRunnable(final ImageView štapić) {
+            this.štapić = štapić;
+        }
+
+        @Override
+        public void run() {
+            System.out.println("Thread " + štapić.getId() + " started.");
+            throwStick(štapić);
+            System.out.println("Thread " + štapić.getId() + " finished.");
+        }
+    }
+    
     @FXML
     private void handleThrowButton(ActionEvent event) {
         System.out.println("I hate life, but i managed to install this shit again");
         resetSticks();
-        throwStick(stick1);
-        throwStick(stick2);
-        throwStick(stick3);
-        throwStick(stick4);
+        final ForkJoinPool pool = ForkJoinPool.commonPool();
+
+        pool.execute(new MyRunnable(stick1));
+        pool.execute(new MyRunnable(stick2));
+        pool.execute(new MyRunnable(stick3));
+        pool.execute(new MyRunnable(stick4));
+        pool.awaitQuiescence(5, TimeUnit.SECONDS);
+
         if (stickSum == 0) {
             changeTurn();
             return;
@@ -206,7 +227,7 @@ public class PlayingGridController implements Initializable {
     }
 
     //Rules
-    private void throwStick(ImageView stick) {
+    public static void throwStick(ImageView stick) {
         if (util.getRandomBoolean()) {
             stick.setVisible(false);
             stickSum++;

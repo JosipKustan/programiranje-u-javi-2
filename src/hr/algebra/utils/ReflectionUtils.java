@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author lcabraja
+ * @author jkustan
  */
 public class ReflectionUtils {
 

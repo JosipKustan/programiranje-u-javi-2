@@ -15,7 +15,7 @@ import javafx.scene.control.ButtonType;
 
 /**
  *
- * @author lcabraja
+ * @author jkustan
  */
 public class DocumentationUtils {
 
