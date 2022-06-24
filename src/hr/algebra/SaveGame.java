@@ -5,7 +5,6 @@
  */
 package hr.algebra;
 
-import hr.algebra.utils.DocumentationUtils;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.File;
@@ -60,7 +59,6 @@ public class SaveGame implements Serializable {
 
     private static void createSaveFile() {
         try {
-            DocumentationUtils.generateDocumentation();
             File settingsFile = new File(filename);
             settingsFile.createNewFile();
         } catch (IOException ex) {

@@ -248,6 +248,11 @@ public class PlayingGridController implements Initializable {
         return stickSum;
     }
 
+    @FXML
+    private void loadDocumentation(ActionEvent event) {
+        DocumentationUtils.generateDocumentation();
+    }
+
     public static final class MyRunnable implements Runnable {
 
         private final ImageView štapić;
