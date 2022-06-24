@@ -9,7 +9,12 @@ import hr.algebra.rmi.PlayerTwoClient;
 import hr.algebra.rmi.RMIServiceHost;
 import hr.algebra.tcp.Client;
 import hr.algebra.tcp.Server;
+import hr.algebra.utilities.FileUtils;
+import hr.algebra.utilities.MessageUtils;
+import hr.algebra.utils.DocumentationUtils;
+import hr.algebra.utils.JndiUtils;
 import hr.algebra.utils.util;
+import java.io.File;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -253,6 +258,24 @@ public class PlayingGridController implements Initializable {
         DocumentationUtils.generateDocumentation();
     }
 
+    @FXML
+    private void JNDILookup(ActionEvent event) {
+        if (FileUtils.filenameHasExtension(SaveGame.filename, 4)) {
+            JndiUtils.search("C:/Users/jkustan/Documents/NetBeansProjects/SenetFX", SaveGame.filename, 3, path -> {
+                if (path.isPresent()) {
+                    File targetFile = new File(path.get());
+                    if (targetFile.isFile()) {
+                        MessageUtils.showInfoMessage("Jndi search", "Search done", "Save file located");
+                        return;
+                    }
+                }
+                MessageUtils.showInfoMessage("Jndi search", "Search done", "File not found");
+            });
+        } else {
+            MessageUtils.showInfoMessage("Jndi search", "Filename not valid", "Filename must have extension with 3 letters");
+        }
+    }
+
     public static final class MyRunnable implements Runnable {
 
         private final ImageView štapić;
@@ -282,8 +305,10 @@ public class PlayingGridController implements Initializable {
         try {
             new PlayerTwoClient().throwSticks();
             doGameLogic();
+
         } catch (RemoteException ex) {
-            Logger.getLogger(PlayingGridController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlayingGridController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 public class SaveGame implements Serializable {
 
-    private static final String filename = "save.game";
+    public static final String filename = "save.game";
     public int[][] state = new int[2][5];
     public boolean[] sticks = new boolean[4];
     public String turn = "";

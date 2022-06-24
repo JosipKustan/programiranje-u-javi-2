@@ -206,5 +206,6 @@
          </font>
       </Label>
       <Button layoutX="353.0" layoutY="325.0" mnemonicParsing="false" onAction="#loadDocumentation" text="Reflection Docs" />
+      <Button layoutX="353.0" layoutY="300.0" mnemonicParsing="false" onAction="#JNDILookup" text="JNDI Lookup" />
    </children>
 </AnchorPane>
