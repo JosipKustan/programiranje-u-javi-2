@@ -17,6 +17,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,7 +39,9 @@ import javafx.scene.paint.Color;
 public class PlayingGridController implements Initializable {
 
     static int stickSum;
-    String turn = "cat";
+    public int clickCount = 0;
+    public String lastMovedPlayerId = "";
+    public String turn = "cat";
     int nodeMoveCounter;
     int nodeInGameCounter;
 
@@ -97,6 +100,8 @@ public class PlayingGridController implements Initializable {
     @FXML
     private Label serverStatus;
 
+    private boolean unlocked = true;
+
     /**
      * Initializes the controller class.
      *
@@ -122,16 +127,48 @@ public class PlayingGridController implements Initializable {
         if (!Server.isInitialized()) {
             new Thread(() -> {
                 while (true) {
-                    SAVEGAME servergamestate = new Client().requestGameState();
-                    setupBoard(servergamestate.state);
-                    setSticks(servergamestate.sticks);
+                    SaveGame servergamestate = new Client().synchronizeGameState(null);
+                    if (unlocked) {
+                        unlocked = false;
+//                        if (servergamestate.lastMovedPlayerId != lastMovedPlayerId) {
+//                            lastMovedPlayerId = servergamestate.lastMovedPlayerId;
+//                            for (Node node : gameGrid.getChildren()) {
+//                                if (!node.getId().equals(lastMovedPlayerId)) {
+//                                    System.out.println("Its me");
+//                                    Platform.runLater(() -> movePlayer(node));
+//                                    break;
+//                                }
+//                            }
+//                        }
+                        setupBoard(servergamestate.state);
+                        setSticks(servergamestate.sticks);
+                        System.out.println("Client turn: " + turn + " Server turn: " + servergamestate.turn);
+                        if (servergamestate.clickCount != clickCount) {
+                            clickCount = servergamestate.clickCount;
+                            Platform.runLater(() -> {
+                                doGameLogic();
+                            });
+                            if (!servergamestate.turn.equals(turn)) {
+                                turn = servergamestate.turn;
+                                Platform.runLater(() -> {
+                                    turnLabel.setText(turn.substring(0, 1).toUpperCase() + turn.substring(1));
+                                    gameGrid.getChildren().forEach((node) -> {
+                                        node.setEffect(null);
+                                    });
+                                });
+                            }
+                        }
+                    }
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(PlayingGridController.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        unlocked = true;
                     }
                 }
-            }).start();
+            }
+            ).start();
         }
     }
 
@@ -148,19 +185,19 @@ public class PlayingGridController implements Initializable {
         }
     }
 
-    public SAVEGAME save = new SAVEGAME();
+    public SaveGame save = new SaveGame();
 
     @FXML
     private void saveGame(ActionEvent event) {
         System.out.println("Saving...");
         save.state = getBoardState();
-        SAVEGAME.save(save);
+        SaveGame.save(save);
     }
 
     @FXML
     private void loadGame(ActionEvent event) {
         System.out.println("Loading...");
-        SAVEGAME load = SAVEGAME.load();
+        SaveGame load = SaveGame.load();
         setupBoard(load.state);
 
     }
@@ -199,6 +236,16 @@ public class PlayingGridController implements Initializable {
         stick2.setVisible(sticks[1]);
         stick3.setVisible(sticks[2]);
         stick4.setVisible(sticks[3]);
+        stickSum = calculateStickSum();
+    }
+
+    private int calculateStickSum() {
+        stickSum = 0;
+        stickSum += stick1.isVisible() ? 0 : 1;
+        stickSum += stick2.isVisible() ? 0 : 1;
+        stickSum += stick3.isVisible() ? 0 : 1;
+        stickSum += stick4.isVisible() ? 0 : 1;
+        return stickSum;
     }
 
     public static final class MyRunnable implements Runnable {
@@ -220,7 +267,7 @@ public class PlayingGridController implements Initializable {
     @FXML
     private void handleThrowButton(ActionEvent event) {
         if (RMIServiceHost.isInitialized()) {
-            executeStickThrow();
+            executeLocalStickThrow();
         } else {
             executeRemoteStickThrow();
         }
@@ -229,6 +276,7 @@ public class PlayingGridController implements Initializable {
     public void executeRemoteStickThrow() {
         try {
             new PlayerTwoClient().throwSticks();
+            doGameLogic();
         } catch (RemoteException ex) {
             Logger.getLogger(PlayingGridController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -240,7 +288,8 @@ public class PlayingGridController implements Initializable {
         serverStatus.setText(rmistatus + " " + tcpstatus);
     }
 
-    public void executeStickThrow() {
+    public void executeLocalStickThrow() {
+        clickCount++;
         System.out.println("I hate life, but i managed to install this shit again");
         resetSticks();
         final ForkJoinPool pool = ForkJoinPool.commonPool();
@@ -250,13 +299,20 @@ public class PlayingGridController implements Initializable {
         pool.execute(new MyRunnable(stick3));
         pool.execute(new MyRunnable(stick4));
         pool.awaitQuiescence(5, TimeUnit.SECONDS);
-        
+
         save.sticks = countSticks();
-        
+        doGameLogic();
+    }
+
+    public void doGameLogic() {
+        unlocked = false;
+        calculateStickSum();
         if (stickSum == 0) {
             changeTurn();
+            unlocked = true;
             return;
         }
+
         //sum alive
         throwButton.setDisable(true);
         //test if avaliable moves
@@ -282,6 +338,7 @@ public class PlayingGridController implements Initializable {
 
             }
         }
+        unlocked = true;
         if (nodeInGameCounter == 0) {
             youWin();
         }
@@ -311,22 +368,49 @@ public class PlayingGridController implements Initializable {
         stick4.setVisible(true);
     }
 
+    public void clickPiece(String clickedId) {
+        System.out.println("Clicking id " + clickedId);
+        Node clickedNode = null;
+        for (Node node : gameGrid.getChildren()) {
+            if (node.getId().equals(clickedId)) {
+                clickedNode = node;
+                System.out.println("Found id " + node.getId());
+                break;
+            }
+        }
+        if (clickedNode != null) {
+            System.out.println(GridPane.getRowIndex(clickedNode) + ", " + GridPane.getColumnIndex(clickedNode));
+            movePlayer(clickedNode);
+        }
+
+    }
+
     @FXML
     private void handleClicked(MouseEvent event) {
         Node clickedNode = (Node) event.getTarget();
         if (!turn.equals(clickedNode.getId().substring(0, 3))) {
             return;
         }
-        if (throwButton.isDisabled()) {
-            //make a move
-            System.out.println(GridPane.getRowIndex(clickedNode) + ", " + GridPane.getColumnIndex(clickedNode));
-            movePlayer(clickedNode);
-            /*gameGrid.getChildren().forEach(node -> {
+        if (RMIServiceHost.isInitialized() && Server.isInitialized()) {
+            if (throwButton.isDisabled()) {
+                clickCount++;
+                lastMovedPlayerId = clickedNode.getId();
+                //make a move
+                System.out.println(GridPane.getRowIndex(clickedNode) + ", " + GridPane.getColumnIndex(clickedNode));
+                movePlayer(clickedNode);
+                /*gameGrid.getChildren().forEach(node -> {
                  System.out.println(GridPane.getRowIndex(node)+", "+GridPane.getColumnIndex(node));
              });*/
-            //enable button  
+                //enable button  
+            }
+            System.out.println(clickedNode);
+        } else {
+            if (throwButton.isDisabled()) {
+                new Client().synchronizeGameState(clickedNode.getId());
+                lastMovedPlayerId = clickedNode.getId();
+                movePlayer(clickedNode);
+            }
         }
-        System.out.println(clickedNode);
     }
 
     private void movePlayer(Node node) {

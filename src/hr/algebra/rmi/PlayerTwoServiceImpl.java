@@ -7,6 +7,7 @@ package hr.algebra.rmi;
 
 import hr.algebra.PlayingGridController;
 import java.rmi.RemoteException;
+import javafx.application.Platform;
 
 /**
  *
@@ -16,6 +17,6 @@ public class PlayerTwoServiceImpl implements PlayerTwoService {
 
     @Override
     public void throwSticks() throws RemoteException {
-        PlayingGridController.game.executeStickThrow();
+        Platform.runLater(() -> PlayingGridController.game.doGameLogic());
     }
 }

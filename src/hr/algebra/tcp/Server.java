@@ -6,8 +6,9 @@
 package hr.algebra.tcp;
 
 import hr.algebra.PlayingGridController;
-import hr.algebra.SAVEGAME;
+import hr.algebra.SaveGame;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.BindException;
 import java.net.ServerSocket;
@@ -60,10 +61,23 @@ public class Server {
     }
 
     private static void processMessage(Socket clientSocket) {
-        try (
-                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
-            oos.writeObject(new SAVEGAME(PlayingGridController.game.getBoardState(), PlayingGridController.game.countSticks()));
+        try ( ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());  ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            String clickedId = (String) ois.readObject();
+            if (clickedId != null) {
+                PlayingGridController.game.clickPiece(clickedId);
+            }
+            oos.writeObject(
+                    new SaveGame(
+                            PlayingGridController.game.getBoardState(), 
+                            PlayingGridController.game.countSticks(), 
+                            PlayingGridController.game.turn,
+                            PlayingGridController.game.clickCount,
+                            PlayingGridController.game.lastMovedPlayerId
+                    )
+            );
         } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -18,18 +18,24 @@ import java.io.Serializable;
  *
  * @author jkustan
  */
-public class SAVEGAME implements Serializable {
+public class SaveGame implements Serializable {
 
     private static final String filename = "save.game";
     public int[][] state = new int[2][5];
     public boolean[] sticks = new boolean[4];
-
-    public SAVEGAME() {
+    public String turn = "";
+    public int clickCount = 0;
+    public String lastMovedPlayerId;
+    
+    public SaveGame() {
     }
     
-    public SAVEGAME(int[][] state, boolean[] sticks) {
+    public SaveGame(int[][] state, boolean[] sticks, String turn, int clickCount, String lastMovedPlayerId) {
         this.state = state;
         this.sticks = sticks;
+        this.turn = turn;
+        this.clickCount = clickCount;
+        this.lastMovedPlayerId = lastMovedPlayerId;
     }
     
     
@@ -40,7 +46,7 @@ public class SAVEGAME implements Serializable {
 //    private void writeObject(ObjectOutputStream s) throws IOException {
 //        s.defaultWriteObject();
 //    }
-    public static void save(SAVEGAME savegame) {
+    public static void save(SaveGame savegame) {
         try {
             createSaveFile();
             try ( FileOutputStream fos = new FileOutputStream(filename);  XMLEncoder encoder = new XMLEncoder(fos)) {
@@ -62,10 +68,10 @@ public class SAVEGAME implements Serializable {
         }
     }
 
-    public static SAVEGAME load() {
-        SAVEGAME decodedSettings = null;
+    public static SaveGame load() {
+        SaveGame decodedSettings = null;
         try ( FileInputStream fis = new FileInputStream(filename);  XMLDecoder decoder = new XMLDecoder(fis)) {
-            decodedSettings = (SAVEGAME) decoder.readObject();
+            decodedSettings = (SaveGame) decoder.readObject();
         } catch (IOException ex) {
             System.err.println("Cannot access savegame file...");
             createSaveFile();
