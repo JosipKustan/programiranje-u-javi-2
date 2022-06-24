@@ -5,6 +5,8 @@
  */
 package hr.algebra;
 
+import hr.algebra.rmi.RMIServiceHost;
+import hr.algebra.tcp.Server;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author jkustan
  */
-public class HelloFX extends Application{
+public class HelloFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -26,7 +28,14 @@ public class HelloFX extends Application{
         stage.setResizable(false);
         stage.show();
     }
-    public static void main(String [] args){
+
+    public static void main(String[] args) {
+        initProcesses();
         launch(args);
+    }
+
+    private static void initProcesses() {
+        RMIServiceHost.startServices();
+        Server.startServer();
     }
 }

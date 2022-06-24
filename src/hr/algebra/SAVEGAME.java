@@ -22,7 +22,17 @@ public class SAVEGAME implements Serializable {
 
     private static final String filename = "save.game";
     public int[][] state = new int[2][5];
+    public boolean[] sticks = new boolean[4];
 
+    public SAVEGAME() {
+    }
+    
+    public SAVEGAME(int[][] state, boolean[] sticks) {
+        this.state = state;
+        this.sticks = sticks;
+    }
+    
+    
 //    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 //        s.defaultReadObject();
 //    }
@@ -30,11 +40,10 @@ public class SAVEGAME implements Serializable {
 //    private void writeObject(ObjectOutputStream s) throws IOException {
 //        s.defaultWriteObject();
 //    }
-
     public static void save(SAVEGAME savegame) {
         try {
             createSaveFile();
-            try (FileOutputStream fos = new FileOutputStream(filename);  XMLEncoder encoder = new XMLEncoder(fos)) {
+            try ( FileOutputStream fos = new FileOutputStream(filename);  XMLEncoder encoder = new XMLEncoder(fos)) {
                 encoder.writeObject(savegame);
             }
         } catch (IOException ex) {
@@ -45,7 +54,7 @@ public class SAVEGAME implements Serializable {
 
     private static void createSaveFile() {
         try {
-                    DocumentationUtils.generateDocumentation();
+            DocumentationUtils.generateDocumentation();
             File settingsFile = new File(filename);
             settingsFile.createNewFile();
         } catch (IOException ex) {

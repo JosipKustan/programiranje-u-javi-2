@@ -5,11 +5,18 @@
  */
 package hr.algebra;
 
+import hr.algebra.rmi.PlayerTwoClient;
+import hr.algebra.rmi.RMIServiceHost;
+import hr.algebra.tcp.Client;
+import hr.algebra.tcp.Server;
 import hr.algebra.utils.util;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -86,6 +93,10 @@ public class PlayingGridController implements Initializable {
     @FXML
     private ImageView dog5;
 
+    public static PlayingGridController game;
+    @FXML
+    private Label serverStatus;
+
     /**
      * Initializes the controller class.
      *
@@ -106,6 +117,22 @@ public class PlayingGridController implements Initializable {
         initialState[1][3] = 7;
         initialState[1][4] = 9;
         setupBoard(initialState);
+        game = this;
+        setServerStatus(RMIServiceHost.isInitialized(), Server.isInitialized());
+        if (!Server.isInitialized()) {
+            new Thread(() -> {
+                while (true) {
+                    SAVEGAME servergamestate = new Client().requestGameState();
+                    setupBoard(servergamestate.state);
+                    setSticks(servergamestate.sticks);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PlayingGridController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }).start();
+        }
     }
 
     public void setupBoard(int[][] boardstate) {
@@ -157,7 +184,25 @@ public class PlayingGridController implements Initializable {
         return returndata;
     }
 
+    public boolean[] countSticks() {
+        boolean[] sticks = new boolean[4];
+        sticks[0] = stick1.isVisible();
+        sticks[1] = stick2.isVisible();
+        sticks[2] = stick3.isVisible();
+        sticks[3] = stick4.isVisible();
+        System.out.println("" + sticks[0] + sticks[1] + sticks[2] + sticks[3]);
+        return sticks;
+    }
+
+    private void setSticks(boolean[] sticks) {
+        stick1.setVisible(sticks[0]);
+        stick2.setVisible(sticks[1]);
+        stick3.setVisible(sticks[2]);
+        stick4.setVisible(sticks[3]);
+    }
+
     public static final class MyRunnable implements Runnable {
+
         private final ImageView štapić;
 
         public MyRunnable(final ImageView štapić) {
@@ -171,9 +216,31 @@ public class PlayingGridController implements Initializable {
             System.out.println("Thread " + štapić.getId() + " finished.");
         }
     }
-    
+
     @FXML
     private void handleThrowButton(ActionEvent event) {
+        if (RMIServiceHost.isInitialized()) {
+            executeStickThrow();
+        } else {
+            executeRemoteStickThrow();
+        }
+    }
+
+    public void executeRemoteStickThrow() {
+        try {
+            new PlayerTwoClient().throwSticks();
+        } catch (RemoteException ex) {
+            Logger.getLogger(PlayingGridController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void setServerStatus(boolean rmi, boolean tcp) {
+        String rmistatus = "RMI: " + (rmi ? "💻" : "🤡");
+        String tcpstatus = "TCP: " + (tcp ? "💻" : "🤡");
+        serverStatus.setText(rmistatus + " " + tcpstatus);
+    }
+
+    public void executeStickThrow() {
         System.out.println("I hate life, but i managed to install this shit again");
         resetSticks();
         final ForkJoinPool pool = ForkJoinPool.commonPool();
@@ -183,7 +250,9 @@ public class PlayingGridController implements Initializable {
         pool.execute(new MyRunnable(stick3));
         pool.execute(new MyRunnable(stick4));
         pool.awaitQuiescence(5, TimeUnit.SECONDS);
-
+        
+        save.sticks = countSticks();
+        
         if (stickSum == 0) {
             changeTurn();
             return;

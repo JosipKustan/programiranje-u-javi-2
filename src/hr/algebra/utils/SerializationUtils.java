@@ -25,7 +25,7 @@ public class SerializationUtils {
     public static final String RECT_SERIALIZATION = "rects.ser";
 
     public static <T> Optional<T> fetchSerializaedItem(String location) {
-        try (ObjectInputStream ois
+        try ( ObjectInputStream ois
                 = new ObjectInputStream(new FileInputStream(location))) {
             T deserializedItem = (T) ois.readObject();
             return Optional.of(deserializedItem);
@@ -35,11 +35,11 @@ public class SerializationUtils {
     }
 
     public static <T extends Serializable> void updateSerializedItem(T serializableItem, String location) {
-        try (ObjectOutputStream oos
+        try ( ObjectOutputStream oos
                 = new ObjectOutputStream(new FileOutputStream(location))) {
             oos.writeObject(serializableItem);
         } catch (IOException ex) {
             Logger.getLogger(SerializationUtils.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 }

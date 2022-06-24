@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -179,6 +180,7 @@
                         <Insets right="64.0" />
                      </HBox.margin>
                   </ImageView>
+                  <DialogPane />
                </children>
             </HBox>
          </children>
@@ -198,5 +200,10 @@
       </Label>
       <Button layoutX="404.0" layoutY="282.0" mnemonicParsing="false" onAction="#saveGame" text="sejv" />
       <Button layoutX="352.0" layoutY="339.0" mnemonicParsing="false" onAction="#loadGame" text="load" />
+      <Label fx:id="serverStatus" layoutX="369.0" layoutY="238.0" prefHeight="26.0" prefWidth="114.0" text="RMI: 🔳 TCP: 🔳" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
