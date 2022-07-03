@@ -31,7 +31,8 @@ public class Client {
 
     private SaveGame tcpStream(Socket clientSocket, String clickedId) {
         try (
-                 ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());  ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
+                ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());  
+                ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
             oos.writeObject(clickedId);
             SaveGame save = (SaveGame) ois.readObject();
             return save;
